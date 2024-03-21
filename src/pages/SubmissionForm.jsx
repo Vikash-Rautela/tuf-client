@@ -35,7 +35,7 @@ const SubmissionForm = () => {
         };
 
         try {
-            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/submissions`, formData); // <--- Corrected line
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/submissions`, formData);
             console.log('Form data submitted successfully:', response.data);
             setUsername('');
             setCodeLanguage('52');
@@ -47,35 +47,38 @@ const SubmissionForm = () => {
     };
 
     return (
-        <form className="form-container" onSubmit={handleSubmit}>
-            <div>
-                <label htmlFor="username">Username:</label>
+        <form className="max-w-lg mx-auto mt-8 m-2 p-6 bg-gray-300 border rounded-lg shadow-lg" onSubmit={handleSubmit}>
+            <div className="mb-4">
+                <label htmlFor="username" className="block mb-2">Username:</label>
                 <input
                     type="text"
                     id="username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     required
+                    className="w-full p-2 border rounded"
                 />
             </div>
-            <div>
-                <label htmlFor="rememberMe">
+            <div className="mb-4">
+                <label htmlFor="rememberMe" className="flex items-center">
                     <input
                         type="checkbox"
                         id="rememberMe"
                         checked={rememberMe}
                         onChange={handleRememberMe}
+                        className="mr-2"
                     />
-                    Remember Me
+                    <span>Remember Me</span>
                 </label>
             </div>
-            <div>
-                <label htmlFor="codeLanguage">Preferred Code Language:</label>
+            <div className="mb-4">
+                <label htmlFor="codeLanguage" className="block mb-2">Preferred Code Language:</label>
                 <select
                     id="codeLanguage"
                     value={codeLanguage}
                     onChange={(e) => setCodeLanguage(e.target.value)}
                     required
+                    className="w-full p-2 border rounded"
                 >
                     <option value="52">C++ (GCC 7.4.0)</option>
                     <option value="91">Java (JDK 17.0.6)</option>
@@ -83,24 +86,26 @@ const SubmissionForm = () => {
                     <option value="71">Python (3.8.1)</option>
                 </select>
             </div>
-            <div>
-                <label htmlFor="stdin">Standard Input (stdin):</label>
+            <div className="mb-4">
+                <label htmlFor="stdin" className="block mb-2">Standard Input (stdin):</label>
                 <textarea
                     id="stdin"
                     value={stdin}
                     onChange={(e) => setStdin(e.target.value)}
+                    className="w-full p-2 border rounded"
                 />
             </div>
-            <div>
-                <label htmlFor="sourceCode">Source Code:</label>
+            <div className="mb-4">
+                <label htmlFor="sourceCode" className="block mb-2">Source Code:</label>
                 <textarea
                     id="sourceCode"
                     value={sourceCode}
                     onChange={(e) => setSourceCode(e.target.value)}
                     required
+                    className="w-full p-2 border rounded"
                 />
             </div>
-            <button type="submit">Submit</button>
+            <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Submit</button>
         </form>
     );
 };
