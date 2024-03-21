@@ -12,12 +12,12 @@ export const ToastProvider = ({ children }) => {
 
     const showError = (message) => {
         setError(message);
-        setTimeout(() => setError(null), 5000); // Hide error message after 5 seconds
+        setTimeout(() => setError(null), 5000);
     };
 
     const showSuccess = (message) => {
         setSuccess(message);
-        setTimeout(() => setSuccess(null), 5000); // Hide success message after 5 seconds
+        setTimeout(() => setSuccess(null), 5000);
     };
 
     return (
