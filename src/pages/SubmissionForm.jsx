@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useToast } from '../context/ToastContext';
 
 const SubmissionForm = () => {
     const [username, setUsername] = useState('');
-    const [codeLanguage, setCodeLanguage] = useState('52'); // Defaulting to C++
+    const [codeLanguage, setCodeLanguage] = useState('52');
     const [stdin, setStdin] = useState('');
     const [sourceCode, setSourceCode] = useState('');
     const [rememberMe, setRememberMe] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const { showError, showSuccess } = useToast();
 
     useEffect(() => {
         const savedUsername = localStorage.getItem('username');
-        if (savedUsername) {
+        if (savedUsername && rememberMe) {
             setUsername(savedUsername);
         }
-    }, []);
+    }, [rememberMe]);
 
     const handleRememberMe = () => {
         setRememberMe(!rememberMe);
@@ -26,6 +29,7 @@ const SubmissionForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
         const formData = {
             username: username,
@@ -37,12 +41,16 @@ const SubmissionForm = () => {
         try {
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/submissions`, formData);
             console.log('Form data submitted successfully:', response.data);
+            showSuccess('Form data submitted successfully');
             setUsername('');
             setCodeLanguage('52');
             setStdin('');
             setSourceCode('');
         } catch (error) {
             console.error('Error submitting form data:', error);
+            showError('Error submitting form data');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -102,10 +110,16 @@ const SubmissionForm = () => {
                     value={sourceCode}
                     onChange={(e) => setSourceCode(e.target.value)}
                     required
+                    rows={sourceCode.split('\n').length + 1}
                     className="w-full p-2 border rounded"
+                    style={{ minHeight: '100px' }}
                 />
             </div>
-            <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Submit</button>
+            {loading ? (
+                <button type="button" disabled className="bg-gray-500 text-white py-2 px-4 rounded cursor-not-allowed">Submitting...</button>
+            ) : (
+                <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Submit</button>
+            )}
         </form>
     );
 };
